@@ -9,6 +9,7 @@ namespace IdnoPlugins\StatsD {
 	private $port = 8125;
 	private $host = 'localhost';
 	private $enabled = false;
+	private $samplerate = 1;
 
 	public function __construct() {
 
@@ -24,6 +25,9 @@ namespace IdnoPlugins\StatsD {
 
 		if (!empty($config->statsd_host))
 		    $this->host = $config->statsd_host;
+		
+		if (!empty($config->statsd_samplerate))
+		    $this->samplerate = $config->statsd_samplerate;
 
 		if (!empty($config->statsd_enabled))
 		    $this->enabled = $config->statsd_enabled;
@@ -34,7 +38,7 @@ namespace IdnoPlugins\StatsD {
 	    
 	    $stat = $this->normaliseStatName("{$this->bucket}.$stat"); // Sanitise string, add bucket
 	    
-	    $this->updateStats($stat, -1, 1, 'c');
+	    $this->updateStats($stat, -1, $this->samplerate, 'c');
 	}
 
 	public function gauge($stat, $value) {
@@ -49,7 +53,7 @@ namespace IdnoPlugins\StatsD {
 	    
 	    $stat = $this->normaliseStatName("{$this->bucket}.$stat"); // Sanitise string, add bucket
 	    
-	    $this->updateStats($stat, 1, 1, 'c');
+	    $this->updateStats($stat, 1, $this->samplerate, 'c');
 	    
 	}
 
@@ -65,7 +69,7 @@ namespace IdnoPlugins\StatsD {
 	    
 	    $stat = $this->normaliseStatName("{$this->bucket}.$stat"); // Sanitise string, add bucket
 	    
-	    $this->updateStats($stat, $time, 1, 'ms');
+	    $this->updateStats($stat, $time, $this->samplerate, 'ms');
 	}
 
 	protected function normaliseStatName($stat) {

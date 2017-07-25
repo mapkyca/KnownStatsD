@@ -33,7 +33,10 @@ Optionally you can specify the following configuration options:
 statsd_host = localhost
 statsd_port = 8125
 statsd_bucket = some_name
+statsd_samplerate = 1 
 ```
+
+```statsd_samplerate``` being the default sample rate, on busy systems you might want to set this to something like 0.1, to save every one in ten actions
 
 If all the backend and infrastructure stuff has been set up correctly you should now be recording numerous performance statistics about your Known installation.
 
